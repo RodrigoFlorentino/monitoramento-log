@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MinhaApp">
+<head>
+    <title>Tabela</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="shortcut icon" type="image/ico" href="/images/indice.png">-->
+    <link href="/images/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css">
+
+
+    <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/skins/_all-skins.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <link rel="stylesheet" type="text/css" href="/style/loading.css"/>
+    <link rel="stylesheet" type="text/css" href="/style/custom.css"/>
+
+</head>
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+
+<body ng-init="inicializa()" ng-controller="myController" class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
+<header class="main-header">
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" style="margin-left: 0px;">
+        <div class="logo"><img alt="" class="image-logo" src="/images/logo_home.png" width="95"></div>
+        <div class="titulo">Monitoramento / Treinamento</div>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+               <!-- <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs"> {{usuariologado}}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                            <p>
+                                {{usuariologado}} - Web Developer
+                                <small>Member since Nov. 2012</small>
+                            </p>
+                        </li>
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown tasks-menu">
+                    <a href="#" data-toggle="dropdown"><i class="fa fa-gears"></i></a>
+
+                    <ul class="dropdown-menu">
+                        <li class="header">Menu</li>
+                        <li>
+                            <ul class="menu">
+                                <li>
+                                    <a id="link-1" href  ng-click="modalConfigWorkspace('lg','entidade')" >
+                                        <i class="fa fa-wrench fa-fw"></i> <span style="color: black;">Criar nova workspace</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="link-2" href  ng-click="modalCriarWorkspace('lg','configworkspace')" >
+                                        <i class="fa fa-wrench fa-fw"></i> <span style="color: black;">Configurar nova workspace</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-user fa-fw"></i><span style="color: black;">Cadastrar usuario</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>-->
+                <li class="dropdown tasks-menu" >
+                    <a href="#" data-toggle="dropdown" ng-click="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+</header>
+
+<div>
+    <loading></loading>
+    <div class="box box-primary">
+        <br/>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="box-body">
+                <div >
+                    <button ng-click="buscar()" class="btn btn-primary">  <i class="fa fa-search"></i>  Buscar</button>
+                    <!--<button ng-click="aplicar()" class="btn btn-info pull-right">Aplicar</button>-->
+                    <button ng-click="modalEntidade('lg','entidade')" class="btn btn-primary direita" ng-disabled="disableBtnTreinarEntidade">Treinar Entidade</button>
+                    <button ng-click="modalIntencao('lg','intencao')" class="btn btn-primary direita" ng-disabled="disableBtnTreinarIntencao">Treinar Intenção</button>
+                </div>
+                <br/>
+            </div>
+            <div class="alert alert-danger" role="alert" ng-if="errorMessage">{{errorMessage}}</div>
+
+            <form>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="fa fa-search"></i>
+                        </span>
+                            <input type="text" class="form-control" placeholder="Digite a busca desejada..." ng-model="searchFish">
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <label>Confiança</label>
+                          </span>
+                            <select ng-model="selectedSinalMaiorMenor" style="width: 100px;" class="form-control" ng-options="x for x in sinalMaiorMenor">
+                                <option value="">-</option></select>
+                            <select ng-model="selectedPrcConfianca" style="width: 100px;" class="form-control" ng-options="x for x in prcConfianca"><option value="">-</option> </select>
+                            <select ng-model="selectedTpTreinamento" style="width: 100px;" class="form-control" ng-options="x for x in tpTreinamento"><option value="">-</option> </select>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                    <div class="col-lg-4">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <label>Treinamento</label>
+                          </span>
+                            <select ng-model="selectedOpcaoTreinamento" style="width: 100px;" class="form-control" ng-options="x for x in opcaoTreinamento"><option value="">-</option> </select>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                </div>
+
+            </form>
+            <div class="box-body">
+                <div class="tabela">
+                    <div class="box_limiteAltura">
+                        <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th><a href="#" > </a>
+                            <div><a href="#" > </a></div>
+                        </th>
+                        <th>ID da Conversa
+                            <div><a href="#" ng-click="sort_by('conversation_id')">
+                                ID da Conversa
+                                <span ng-show="showDown('conversation_id')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('conversation_id')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>Mensagem do Usuário
+                            <div><a href="#" ng-click="sort_by('msgUser')">
+                                Mensagem do Usuário
+                                <span ng-show="showDown('msgUser')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('msgUser')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>% Confiança Intenção
+                            <div style="text-align: center;"><a href="#" ng-click="sort_by('confidenceIntencao')">
+                                % Confiança Intenção
+                                <span ng-show="showDown('confidenceIntencao')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('confidenceIntencao')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th># Intenção
+                            <div><a href="#" ng-click="sort_by('intencao')">
+                                # Intenção
+                                <span ng-show="showDown('intencao')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('intencao')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>% Confiança Entidade
+                            <div style="text-align: center;"><a href="#" ng-click="sort_by('confidenceEntidade')">
+                                % Confiança Entidade
+                                <span ng-show="showDown('confidenceEntidade')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('confidenceEntidade')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>@ Entidade
+                            <div><a href="#" ng-click="sort_by('entidade')">
+                                @ Entidade
+                                <span ng-show="showDown('entidade')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('entidade')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>Data / Hora
+                            <div><a href="#" ng-click="sort_by('data')">
+                                Data / Hora
+                                <span ng-show="showDown('data')" class="fa fa-caret-down"></span>
+                                <span ng-show="showUp('data')" class="fa fa-caret-up"></span>
+                            </a></div>
+                        </th>
+                        <th>Treino<div style="text-align: center;"><a href="#">
+                            Treino</a></div></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="item in (filteredItems = (items | orderBy:sortType:sortReverse | filter:searchFish | filterTreinamento:selectedOpcaoTreinamento | filterConfianca:selectedSinalMaiorMenor:selectedPrcConfianca:selectedTpTreinamento  ))"  >
+                            <td>
+                                <input type="checkbox" name="selectedItem[]"  value="{{item.id}}" ng-checked="selection.indexOf(item.id) > -1" ng-click="toggleSelection(item.id)">
+                            </td>
+                            <td>{{item.conversation_id}}</td>
+                            <td>{{item.msgUser}}</td>
+                            <td style="text-align: center;">{{item.confidenceIntencao}} <span ng-show="isNumber(item.confidenceIntencao)">%</span></td>
+                            <td>{{item.intencao}}</td>
+                            <td style="text-align: center;">{{item.confidenceEntidade}} <span ng-show="isNumber(item.confidenceEntidade)">%</span></td>
+                            <td>{{item.entidade}}</td>
+                            <td>{{item.data}}</td>
+                            <td style="text-align: center;"><span ng-show="{{item.treinado}}" class="fa fa-check" aria-hidden="true"> </span></td>
+                            <!--<td>{{item.id}}</td>-->
+                        </tr>
+                    </tbody>
+                </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</div>
+<div ng-controller="ModalInstanceCtrl">
+    <script type="text/ng-template" id="myModalEntidade.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Definir Entidade:</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="form-group">
+                <div  style="text-align: center;">
+                    <br/>
+                    <label>
+                        <input type="radio" ng-model="$ctrl.defineVlrSin" value="Valor" ng-change="$ctrl.onchangeRadioEnt()">
+                        Definir Novo Valor
+                    </label>
+                    <label style="margin-left: 5em;">
+                        <input type="radio" ng-model="$ctrl.defineVlrSin" value="Sinonimo" ng-change="$ctrl.onchangeRadioEnt()">
+                        Definir Novo Sinonimo
+                    </label><br/>
+                </div>
+                <label> Entidade </label>
+                <select ng-model="selectedEntidade" class="form-control"  ng-change="$ctrl.onchangeEntidade()" >
+                    <option value="">-- selecione a entidade --</option>
+                    <option ng-repeat="x in $ctrl.entidades" value="{{x.descricao}}">{{x.descricao}}</option>
+                </select></br>
+                <div ng-if="$ctrl.defineVlrSin == 'Sinonimo'">
+                    <label > Valor </label>
+                    <select ng-model="$ctrl.selectedEntidadeValue"  class="form-control"  >
+                        <option value="">-- selecione o valor --</option>
+                        <option ng-repeat="x in $ctrl.EntidadeValues" value="{{x.descricao}}">{{x.descricao}}</option>
+                    </select>
+
+                </div>
+                <br/>
+                <div  style="text-align: left;">
+                    <label>{{$ctrl.defineVlrSin}}</label>
+                    <span>{{$ctrl.mensagemEntidade}}</span>
+                </div>
+
+                <div class="alert alert-success" role="alert" ng-if="$ctrl.sucessoMessage">{{$ctrl.sucessoMessage}}</div>
+                <div class="alert alert-danger" role="alert" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">Salvar</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Fechar</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="myModalIntencao.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title1">Definir Intenção:</h3>
+        </div>
+        <div class="modal-body" id="modal-body1">
+            <div class="form-group">
+                <div>
+                    <label>Intenção</label>
+                    <select ng-model="selectedIntencao" class="form-control">
+                        <option value="">-- selecione a intenção --</option>
+                        <option ng-repeat="x in $ctrl.intencoes" value="{{x.descricao}}">{{x.descricao}}</option>
+                    </select>
+                </div>
+                <br/>
+                <div  style="text-align: left;">
+                    <label>Mensagem:</label>
+                    <span>{{$ctrl.mensagemIntencao}}</span>
+                </div>
+                <div class="alert alert-success" role="alert" ng-if="$ctrl.sucessoMessage">{{$ctrl.sucessoMessage}}</div>
+                <div class="alert alert-danger" role="alert" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">Salvar</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Fechar</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="myModalAdmWorkspace.html">
+        <div class="register-box-body">
+            <p class="login-box-msg">Criar uma nova workspace</p>
+
+
+                <div class="form-group has-feedback">
+                    <input type="text" ng-model="nome" class="form-control" placeholder="nome">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" ng-model="workspaceId" class="form-control" placeholder="workspace id">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" ng-model="username" class="form-control" placeholder="Username">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password"  ng-model="password" class="form-control" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="alert alert-success" role="alert" ng-if="$ctrl.sucessoMessage">{{$ctrl.sucessoMessage}}</div>
+                <div class="alert alert-danger" role="alert" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.saveWorkspace()" >Salvar</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Fechar</button>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="myModalConfigWorkspace.html">
+        <div class="register-box-body">
+        <p class="login-box-msg">Configure uma nova workspace</p>
+        <div class="modal-body" id="modal-body3">
+            <div class="form-group">
+                <label>workspace</label>
+                <select ng-model="selectedWorkspace" class="form-control" ng-change="$ctrl.onchangeWorkspace()">
+                    <option value="">-- selecione a workspace --</option>
+                    <option ng-repeat="x in $ctrl.workspacesValues" value="{{x.id}}">{{x.nome}}</option>
+                </select>
+                <br>
+                <label>Detalhes: </label>
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="$ctrl.itemWorksapceSelected.nome"><br>
+                    <input type="text" class="form-control" ng-model="$ctrl.itemWorksapceSelected.workspaceId"><br>
+                    <input type="text" class="form-control" ng-model="$ctrl.itemWorksapceSelected.username"><br>
+                    <input type="text" class="form-control" ng-model="$ctrl.itemWorksapceSelected.password"><br>
+
+                    <div>
+                <div class="alert alert-success" role="alert" ng-if="$ctrl.sucessoMessage">{{$ctrl.sucessoMessage}}</div>
+                <div class="alert alert-danger" role="alert" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.configureWorkspace()">Salvar</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Fechar</button>
+        </div>
+        </div>
+    </script>
+
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-animate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.js"></script>
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+
+<script type="text/javascript" src="/scripts/controllers/controller-log-conversation.js"></script>
+<script type="text/javascript" src="/scripts/controllers/controller-modal-conversation.js"></script>
+<script type="text/javascript" src="/scripts/directives/load-directive.js"></script>
+
+<script type="text/javascript">
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? true : false;
+        jQuery(document).ready(function($){
+            if(!isMobile) {
+              $( "<style>.custom-dialog .modal-dialog { width :20%; min-width: 600px;}</style>" ).appendTo( "head" );
+            }
+        });
+
+        $(function(){
+          $('.box_limiteAltura') .css({'height': (($(window).height()) - 300)+'px'});
+          $(window).bind('resize', function(){
+            $('.box_limiteAltura') .css({'height': (($(window).height()) - 300)+'px'});
+          });
+        });
+   </script>
+<!-- FastClick -->
+
+<!-- FastClick -->
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="https://adminlte.io/themes/AdminLTE/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="https://adminlte.io/themes/AdminLTE/dist/js/demo.js"></script>
+</body>
+</html>

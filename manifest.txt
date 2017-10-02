@@ -1,0 +1,19 @@
+declared-services:
+  my-discovery:
+    label: discovery
+    plan: free
+declared-services:
+  viacognitiva-cloudantNoSQLDB:
+    label: cloudantNoSQLDB
+    plan:  Lite
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: chatbotvbo
+  host: chatbotvbo${random-word}
+  disk_quota: 512M
+services:
+      - Discovery-86
+      - viacognitiva-cloudantNoSQLDB

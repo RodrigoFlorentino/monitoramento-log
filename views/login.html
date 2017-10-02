@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="MinhaApp">
+<head>
+
+       <title>Login</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="shortcut icon" type="image/ico" href="/images/indice.png">-->
+        <link href="/images/favicon.ico" rel="shortcut icon" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://almsaeedstudio.com/themes/AdminLTE/dist/css/AdminLTE.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/plugins/iCheck/square/blue.css">
+        <link rel="stylesheet" type="text/css" href="/style/custom.css"/>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+</head>
+<body class="hold-transition login-page">
+<div class="logoLogin"><img alt="" class="image-logo" src="/images/logo_home.png" width="100"></div>
+<div class="login-logo">
+    <a href="../../index2.html"><b>Monitoramento / Treinamento</b></a>
+</div>
+<div ng-controller="userController" class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">
+            Faça login para iniciar sua sessão</p>
+
+        <form >
+            <div class="form-group has-feedback">
+                <input type="email" ng-model="user" class="form-control" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" ng-model="password" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox"> Remember Me
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button  ng-click="logar()" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <div class="social-auth-links text-center">
+           <!-- <a href="#">I forgot my password</a><br>
+            <a href="register.html" class="text-center">Register a new membership</a>-->
+            <div class="alert alert-danger" role="alert" ng-if="errorMessage">{{errorMessage}}</div>
+        </div>
+        <!-- /.social-auth-links -->
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 3 -->
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="https://adminlte.io/themes/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-animate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.js"></script>
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script>
+
+<script type="text/javascript" src="/scripts/controllers/controller-user.js"></script>
+
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
+</body>
+</html>
